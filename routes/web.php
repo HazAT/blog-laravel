@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Sentry\State\Scope;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+
     return view('welcome');
+});
+
+Route::get('/debug-sentry', function () {
+    \Sentry\configureScope(function (Scope $scope): void {
+        $scope->setTags([
+            'testy' => 'test',
+        ]);
+    });
+    throw new Exception('My first Sentry error!');
 });
